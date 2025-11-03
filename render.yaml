@@ -3,6 +3,6 @@ services:
     name: heart-attack-predictor
     runtime: java
     build:
-      command: "mvn clean package"
-    start:
-      command: "java -jar target/heartapp-1.0.jar"
+    command: "mvn clean package"
+    start: 
+    command: "java -jar target/heartapp-1.0.jar"
