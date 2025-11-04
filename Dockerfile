@@ -8,6 +8,7 @@ RUN mvn -B -e -DskipTests clean package
 # ---- Run stage ----
 FROM eclipse-temurin:17-jre
 WORKDIR /app
-COPY --from=build /app/target/heartpredictor-1.0.jar ./heartpredictor-1.0.jar
+COPY --from=build /app/target/heartapp-1.0.jar ./heartapp-1.0.jar
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","heartpredictor-1.0.jar"]
+ENTRYPOINT ["java","-jar","heartapp-1.0.jar"]
+
