@@ -4,74 +4,114 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Heart Attack Risk Predictor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
   <style>
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f5f5f5;
+      /* New pleasing gradient background */
+      font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right top, #e6f7ff, #f7f0ff);
       margin: 0;
-      padding: 40px 0; /* Added padding */
+      padding: 20px 0; /* Added padding for smaller screens */
       display: flex;
+      align-items: center;
       justify-content: center;
       min-height: 100vh; /* Changed from height to min-height */
-      /* Removed align-items: center to allow natural top alignment */
+      box-sizing: border-box; /* Ensures padding doesn't break layout */
     }
 
     .container {
-      background-color: #fff;
+      background-color: #ffffff;
       width: 700px;
       padding: 40px 50px;
-      border-radius: 14px;
-      box-shadow: 0 4px 25px rgba(0, 0, 0, 0.1);
+      border-radius: 16px; /* Softer radius */
+      /* New softer shadow */
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
       overflow-y: auto;
       max-height: 90vh;
+      max-width: 90%; /* Added for responsiveness */
+      border: 1px solid #ffffffa0;
     }
 
     h1 {
       text-align: center;
-      color: #2e3a59;
+      color: #2C3E50; /* Softer dark blue */
       margin-bottom: 30px;
+      font-weight: 700;
     }
 
     h3 {
-      color: #2e74b5;
+      color: #5D6D7E; /* Softer grey-blue */
       margin-top: 25px;
-      border-bottom: 1px solid #ddd;
-      padding-bottom: 5px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 8px;
+      font-weight: 600;
     }
 
     label {
       display: inline-block;
-      width: 240px;
-      margin: 10px 0 5px;
-      color: #333;
+      width: 280px; /* Increased width for new labels */
+      margin: 18px 0 8px; /* Increased top margin for more space (was 12px) */
+      color: #34495E; /* Darker text for readability */
+      vertical-align: top; /* Aligns label with top of input */
+      font-weight: 500;
     }
 
-    input, select {
+    input[type="number"], select {
       width: 220px;
-      padding: 6px;
+      padding: 8px 10px; /* Slightly more padding */
       border: 1px solid #ccc;
-      border-radius: 5px;
+      border-radius: 6px; /* Slightly softer radius */
       font-size: 14px;
+      box-sizing: border-box; 
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
+    
+    /* Focus state for inputs */
+    input[type="number"]:focus, select:focus {
+      outline: none;
+      border-color: #6C63FF;
+      box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.2);
+    }
+    
+    /* Responsive layout for form elements */
+    @media (max-width: 600px) {
+      label, input[type="number"], select {
+        width: 100%; /* Full width on small screens */
+        display: block;
+      }
+      label {
+        margin-top: 15px;
+      }
+      .container {
+        padding: 20px 25px;
+      }
+    }
+
 
     .button-container {
       text-align: center;
-      margin-top: 25px;
+      margin-top: 30px;
     }
 
     button {
-      background-color: #2e74b5;
+      background-color: #6C63FF; /* New pleasing purple */
       color: white;
       border: none;
       padding: 12px 35px;
       border-radius: 8px;
-      font-size: 15px;
+      font-size: 16px; /* Larger font */
+      font-weight: 600;
       cursor: pointer;
-      transition: 0.3s;
+      transition: background-color 0.3s, transform 0.2s;
     }
 
     button:hover {
-      background-color: #1f5a90;
+      background-color: #5751D9; /* Darker purple for hover */
+      transform: translateY(-2px); /* Subtle lift */
     }
 
     /* Popup Modal */
@@ -100,6 +140,7 @@
       border-radius: 10px;
       text-align: center;
       width: 400px;
+      max-width: 90%; 
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
       animation: scaleUp 0.3s ease;
     }
@@ -110,7 +151,8 @@
     }
 
     .modal h2 {
-      color: #2e3a59;
+      color: #2C3E50;
+      font-weight: 700;
     }
 
     .modal p {
@@ -124,6 +166,14 @@
       font-weight: 600;
       margin-top: 10px;
     }
+    
+    /* New style for the disclaimer */
+    .modal-disclaimer {
+      font-size: 12px;
+      font-style: italic;
+      color: #888;
+      margin-top: 15px;
+    }
 
     .low { color: green; }
     .moderate { color: #e6b800; }
@@ -131,9 +181,9 @@
     .critical { color: #d63031; }
 
     .modal a {
-      display: none; /* Hide link by default */
+      display: none; /* Hidden by default */
       margin-top: 20px;
-      color: #2e74b5;
+      color: #6C63FF; /* Match new theme */
       text-decoration: none;
       font-weight: 500;
     }
@@ -143,17 +193,19 @@
     }
 
     .close-btn {
-      background: #2e74b5;
+      background: #6C63FF; /* Match new theme */
       color: white;
       border: none;
       border-radius: 6px;
       padding: 8px 20px;
       margin-top: 20px;
       cursor: pointer;
+      font-weight: 500;
+      transition: background-color 0.3s;
     }
 
     .close-btn:hover {
-      background-color: #1f5a90;
+      background-color: #5751D9; /* Darker hover */
     }
   </style>
 </head>
@@ -162,8 +214,8 @@
     <h1>Heart Attack Risk Predictor</h1>
 
     <h3>Personal Information</h3>
-    <label>Age:</label> <input type="number" id="age"><br>
-    <label>Body Weight (kg):</label> <input type="number" id="weight"><br>
+    <label>Age:</label> <input type="number" id="age" placeholder="e.g., 55"><br>
+    <label>Body Weight (kg):</label> <input type="number" id="weight" placeholder="e.g., 80"><br>
     <label>Gender:</label>
     <select id="gender">
       <option value="">Select gender...</option>
@@ -172,55 +224,46 @@
     </select>
 
     <h3>Health Information</h3>
-    <label>Chest pain or shortness of breath:</label>
+    <label>Chest pain type:</label>
     <select id="chestPain">
-        <option value="">Select...</option>
-        <option value="0">No</option>
-        <option value="1">Yes</option>
+        <option value="">Select type...</option>
+        <option value="none">None or non-anginal pain</option>
+        <option value="on_exertion">Pain only on exertion (Stable Angina)</option>
+        <option value="at_rest">Pain at rest (Unstable Angina)</option>
     </select><br>
 
-    <label>High blood pressure:</label>
-    <select id="bp">
-        <option value="">Select...</option>
-        <option value="0">No</option>
-        <option value="1">Yes</option>
-    </select><br>
+    <label>Systolic Blood Pressure (mmHg):</label>
+    <input type="number" id="bp" placeholder="e.g., 140"><br>
 
-    <label>High cholesterol:</label>
-    <select id="cholesterol">
-        <option value="">Select...</option>
-        <option value="0">No</option>
-        <option value="1">Yes</option>
-    </select><br>
+    <label>Total Cholesterol (mg/dL):</label>
+    <input type="number" id="cholesterol" placeholder="e.g., 220"><br>
 
-    <label>Diabetes:</label>
-    <select id="diabetes">
-        <option value="">Select...</option>
-        <option value="0">No</option>
-        <option value="1">Yes</option>
-    </select><br>
+    <label>Fasting Blood Sugar (mg/dL):</label>
+    <input type="number" id="sugar" placeholder="e.g., 110"><br>
 
-    <label>Smoke regularly:</label>
+    <label>Smoking status:</label>
     <select id="smoke">
-        <option value="">Select...</option>
-        <option value="0">No</option>
-        <option value="1">Yes</option>
+        <option value="">Select status...</option>
+        <option value="never">Never smoked</option>
+        <option value="former">Former smoker</option>
+        <option value="current">Current smoker</option>
     </select><br>
 
     <label>Family history of heart disease:</label>
     <select id="family">
         <option value="">Select...</option>
-        <option value="0">No</option>
-        <option value="1">Yes</option>
+        <option value="no">No</option>
+        <option value="yes">Yes</option>
     </select><br>
 
     <h3>Lifestyle Information</h3>
     <label>Exercise frequency:</label>
     <select id="exercise">
       <option value="">Select frequency...</option>
-      <option value="0">Rarely</option>
-      <option value="1">Sometimes</option>
-      <option value="2">Often</option>
+      <option value="sedentary">Sedentary (little or no exercise)</option>
+      <option value="light">Light (1-2 days/week)</option>
+      <option value="moderate">Moderate (3-4 days/week)</option>
+      <option value="active">Active (5-7 days/week)</option>
     </select><br>
 
     <label>Diet type:</label>
@@ -235,19 +278,19 @@
 
     <label>Alcohol consumption:</label>
     <select id="alcohol">
-      <option value="">Select consumption...</option>
-      <option value="0">Never</option>
-      <option value="1">Occasionally</option>
-      <option value="2">Frequently</option>
+      <option value="">Select level...</option>
+      <option value="none">None</option>
+      <option value="moderate">Moderate (1-2 drinks/day)</option>
+      <option value="heavy">Heavy (3+ drinks/day)</option>
     </select><br>
 
     <label>Stress level:</label>
     <select id="stress">
       <option value="">Select level...</option>
-      <option value="0">Low</option>
-      <option value="1">Moderate</option>
-      <option value="2">High</option>
-      <option value="3">Severe</option>
+      <option value="low">Low</option>
+      <option value="moderate">Moderate</option>
+      <option value="high">High</option>
+      <option value="severe">Severe</option>
     </select><br>
 
     <div class="button-container">
@@ -256,66 +299,104 @@
   </div>
 
   <!-- Popup Modal -->
-  <div class="modal" id="resultModal"> <!-- FIXED: Changed "classm" to "class" -->
+  <div class="modal" id="resultModal">
     <div class="modal-content">
       <h2>Your Heart Attack Risk</h2>
       <p id="riskText"></p>
       <p class="risk-level" id="riskCategory"></p>
+      <!-- Disclaimer moved from here -->
       <a id="healthLink" href="https://www.heart.org/en/healthy-living" target="_blank">
         Know how to stay healthy →
       </a><br>
+      <!-- Disclaimer added here 
+      <p class="modal-disclaimer">Disclaimer: This calculator is for educational purposes only and is not a professional medical advice.</p>-->
       <button class="close-btn" onclick="closeModal()">Close</button>
     </div>
   </div>
 
   <script>
     function calculateRisk() {
-      // Safely parse all values, defaulting to 0 or "" if empty
+      // Get all values, default to 0 for numbers if empty
       const age = parseInt(document.getElementById("age").value) || 0;
-      const weight = parseInt(document.getElementById("weight").value) || 0;
+      // Weight is removed from scoring as it's not precise without height.
+      // const weight = parseInt(document.getElementById("weight").value) || 0; 
+      const gender = document.getElementById("gender").value;
       
-      // Safely parse dropdowns, defaulting to 0 (for "No" or "Low") if "Select..." is left
+      // Health Info
+      const chestPain = document.getElementById("chestPain").value;
       const bp = parseInt(document.getElementById("bp").value) || 0;
       const cholesterol = parseInt(document.getElementById("cholesterol").value) || 0;
-      const diabetes = parseInt(document.getElementById("diabetes").value) || 0;
-      const smoke = parseInt(document.getElementById("smoke").value) || 0;
-      const family = parseInt(document.getElementById("family").value) || 0;
-      const exercise = parseInt(document.getElementById("exercise").value) || 0;
-      const alcohol = parseInt(document.getElementById("alcohol").value) || 0;
-      const chestPain = parseInt(document.getElementById("chestPain").value) || 0;
-      const stress = parseInt(document.getElementById("stress").value) || 0;
+      const sugar = parseInt(document.getElementById("sugar").value) || 0;
+      const smoke = document.getElementById("smoke").value;
+      const family = document.getElementById("family").value;
 
-      // Get the string value for the new diet
+      // Lifestyle Info
+      const exercise = document.getElementById("exercise").value;
       const diet = document.getElementById("diet").value;
+      const alcohol = document.getElementById("alcohol").value;
+      const stress = document.getElementById("stress").value;
 
       let score = 0;
 
-      // Weighted scoring
-      if (age > 60) score += 25;
-      else if (age > 45) score += 15;
-      
-      if (weight > 90) score += 10; // Simple weight check
-      
-      if (bp === 1) score += 15;
-      if (cholesterol === 1) score += 15;
-      if (diabetes === 1) score += 10;
-      if (smoke === 1) score += 10;
-      if (family === 1) score += 10;
-      if (chestPain === 1) score += 20;
-      
-      if (exercise === 0) score += 10; // 0 = Rarely
-      
-      // Updated diet scoring
-      if (diet === "High fat") score += 10;
-      else if (diet === "Low fibre") score += 5;
-      // Other diets add 0
-      
-      if (alcohol === 2) score += 5; // 2 = Frequently
-      
-      if (stress === 2) score += 10; // 2 = High
-      if (stress === 3) score += 15; // 3 = Severe
+      // --- Scoring Logic ---
 
-      if (score > 100) score = 100;
+      // Age
+      if (age > 60) score += 20;
+      else if (age > 45) score += 10;
+
+      // Gender
+      if (gender === "male") score += 5;
+      
+      // Weight score removed for more precision (risk is captured by BP, cholesterol)
+      // if (weight > 90) score += 5; 
+      
+      // Chest Pain (High impact)
+      if (chestPain === "at_rest") score += 25;
+      else if (chestPain === "on_exertion") score += 15;
+
+      // Blood Pressure (Systolic) - Refined Scoring
+      if (bp > 160) score += 20;
+      else if (bp > 140) score += 10; // Was 15
+      else if (bp > 130) score += 5;  // Was 10
+      
+      // Cholesterol (Total)
+      if (cholesterol > 240) score += 15;
+      else if (cholesterol > 200) score += 10;
+
+      // Blood Sugar (Fasting)
+      if (sugar > 125) score += 15; // Diabetes
+      else if (sugar > 100) score += 10; // Pre-diabetes
+
+      // Smoking
+      if (smoke === "current") score += 15;
+      else if (smoke === "former") score += 7;
+      
+      // Family History
+      if (family === "yes") score += 10;
+      
+      // Exercise
+      if (exercise === "sedentary") score += 10;
+      else if (exercise === "light") score += 5;
+      else if (exercise === "active") score -= 5; // Bonus
+      
+      // Diet
+      if (diet === "High fat") score += 10;
+      if (diet === "Low fibre") score += 5;
+      if (diet === "High fibre") score -= 5; // Bonus
+      if (diet === "Balanced diet") score -= 10; // Bonus
+      
+      // Alcohol
+      if (alcohol === "heavy") score += 10;
+      else if (alcohol === "moderate") score += 5;
+
+      // Stress
+      if (stress === "severe") score += 15;
+      else if (stress === "high") score += 10;
+      
+      // --- Final Score Calculation ---
+      
+      // Ensure score is between 0 and 100
+      score = Math.max(0, Math.min(100, score));
 
       let category = "";
       let categoryClass = "";
@@ -325,21 +406,19 @@
       else if (score <= 75) { category = "High Risk"; categoryClass = "high"; }
       else { category = "Critical Risk"; categoryClass = "critical"; }
 
-      // Update modal text
       document.getElementById("riskText").innerText = `Predicted Risk Score: ${score}%`;
       const riskCatEl = document.getElementById("riskCategory");
-      riskCatEl.innerText = `Risk Level: ${category}`; // Explicitly state the category
+      riskCatEl.innerText = `Risk Level: ${category}`;
       riskCatEl.className = `risk-level ${categoryClass}`;
 
-      // Show link only for Moderate risk or higher
+      // Show health link only for moderate risk or higher
       const healthLink = document.getElementById("healthLink");
-      if (score > 30) { // Show for Moderate, High, Critical
+      if (score > 30) {
         healthLink.style.display = "inline-block";
       } else {
         healthLink.style.display = "none";
       }
       
-      // Show the modal
       document.getElementById("resultModal").style.display = "flex";
     }
 
@@ -349,5 +428,3 @@
   </script>
 </body>
 </html>
-
-
