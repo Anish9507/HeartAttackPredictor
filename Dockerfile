@@ -1,14 +1,12 @@
-# ---- Build stage ----
-FROM maven:3.9.4-eclipse-temurin-17 as build
+# Stage 1: Build the application
+FROM maven:3.8-openjdk-17 AS build
 WORKDIR /app
 COPY pom.xml .
 COPY src ./src
-RUN mvn -B -e -DskipTests clean package
+RUN mvn clean package
 
-# ---- Run stage ----
-FROM eclipse-temurin:17-jre
+# Stage 2: Create the final, small image
+FROM openjdk:17-slim
 WORKDIR /app
-COPY --from=build /app/target/heartapp-1.0.jar ./heartapp-1.0.jar
-EXPOSE 8080
-ENTRYPOINT ["java","-jar","heartapp-1.0.jar"]
-
+COPY --from=build /app/target/heartapp-1.0.jar .
+CMD ["java", "-jar", "heartapp-1.0.jar"]
